@@ -7,18 +7,7 @@
     android:layout_margin="10dp"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".MainActivity">
-
-    <EditText
-        android:id="@+id/edtUserName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:autofillHints="@string/user_name"
-        android:hint="@string/user_name"
-        android:inputType="text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    tools:context=".presentation.ui.LoginActivity">
 
     <EditText
         android:id="@+id/edtEmail"
@@ -43,10 +32,10 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/btnRegister"
+        android:id="@+id/btnLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/register" />
+        android:text="@string/login" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -54,4 +43,12 @@
         android:layout_height="wrap_content"
         android:visibility="gone" />
 
+
+    <TextView
+        android:id="@+id/txtRegister"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:layout_gravity="center_horizontal|bottom"
+        android:text="@string/register_user" />
 </LinearLayout>

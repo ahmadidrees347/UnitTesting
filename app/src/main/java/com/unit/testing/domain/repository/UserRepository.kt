@@ -2,17 +2,16 @@ package com.unit.testing.domain.repository
 
 import com.unit.testing.data.local.entity.UserEntity
 import com.unit.testing.utils.Resource
-import com.unit.testing.utils.SimpleResource
 import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
 
     suspend fun insertUser(model: UserEntity): Flow<Resource<List<Long>>>//SimpleResource//Flow<List<Long>>
-    suspend fun register(model: UserEntity): Flow<Resource<List<Long>>>//Resource<List<Long>>//Flow<List<Long>>
+    suspend fun register(model: UserEntity): Flow<Resource<List<Long>>>
 
-    suspend fun getUserById(userId: String): Flow<UserEntity>
+    suspend fun getUserById(userId: String): Flow<Resource<UserEntity>>
 
-    suspend fun getAllUsers(): Flow<MutableList<UserEntity>>
+    suspend fun getAllUsers(): Flow<Resource<MutableList<UserEntity>>>
 
     suspend fun deleteAllUsers(): Flow<Int>
 
@@ -20,5 +19,6 @@ interface UserRepository {
 
     suspend fun isUserExist(userId: String): Flow<Boolean>
 
-    suspend fun isUserExist(email: String, password: String): Flow<Boolean>
+    suspend fun isUserExist(email: String, password: String): Flow<Resource<Boolean>>
+    suspend fun getUserByEmailAndPassword(email: String, password: String): Flow<Resource<UserEntity>>
 }

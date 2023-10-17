@@ -13,4 +13,8 @@ data class UserEntity(
     val userName: String,
     val email: String,
     val password: String
-): Parcelable
+): Parcelable {
+    override fun toString(): String {
+        return "UserEntity(id=$id, userName='$userName', email='$email', password='$password')"
+    }
+}

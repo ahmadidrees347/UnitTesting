@@ -11,6 +11,11 @@ sealed class AuthError {
     object InvalidPassword : AuthError()
     object PasswordNotMatch : AuthError()
 
+    /**
+     * Same Value in flow could not be emitted twice,
+     * So If you want to enable that case:
+     * then you have to override these methods.
+     * */
     override fun hashCode(): Int {
         return Random.nextInt()
     }

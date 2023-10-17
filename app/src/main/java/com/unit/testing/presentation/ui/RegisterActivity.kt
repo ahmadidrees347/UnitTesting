@@ -1,12 +1,13 @@
-package com.unit.testing
+package com.unit.testing.presentation.ui
 
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.unit.testing.databinding.ActivityMainBinding
+import com.unit.testing.databinding.ActivityRegisterBinding
 import com.unit.testing.presentation.util.AuthError
 import com.unit.testing.presentation.viewmodel.UserRegisterViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -14,10 +15,10 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class RegisterActivity : AppCompatActivity() {
 
     private val registerViewModel by viewModels<UserRegisterViewModel>()
-    private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
+    private val binding by lazy { ActivityRegisterBinding.inflate(layoutInflater) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +40,7 @@ class MainActivity : AppCompatActivity() {
                 binding.edtEmail.error = setAuthError(it)
             }
         }
-       lifecycleScope.launch {
+        lifecycleScope.launch {
             registerViewModel.usernameData.collectLatest {
                 binding.edtUserName.error = setAuthError(it)
             }
@@ -64,6 +65,9 @@ class MainActivity : AppCompatActivity() {
                             binding.edtEmail.setText("")
                             binding.edtUserName.setText("")
                             binding.edtPassword.setText("")
+
+                            Toast.makeText(this@RegisterActivity, "User Created!", Toast.LENGTH_SHORT).show()
+                            finish()
                         } else {
                             Log.e("data*", "userEntity is NullOrEmpty")
                         }
