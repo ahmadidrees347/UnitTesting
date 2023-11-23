@@ -30,6 +30,9 @@ class LoginActivity : AppCompatActivity() {
 
 
         with(binding) {
+            txtShopping.setOnClickListener {
+                startActivity(Intent(this@LoginActivity, ShoppingActivity::class.java))
+            }
             txtRegister.setOnClickListener {
                 startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
             }
