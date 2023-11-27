@@ -8,4 +8,7 @@
     <string name="login">Login</string>
     <string name="shopping">Shopping</string>
     <string name="records_in_db">Records In DB</string>
+    <string name="image">Image</string>
+    <string name="name">NAME</string>
+    <string name="price">Price: 3€</string>
 </resources>
