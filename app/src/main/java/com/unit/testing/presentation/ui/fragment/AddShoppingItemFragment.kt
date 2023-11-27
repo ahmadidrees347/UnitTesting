@@ -8,12 +8,20 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.RequestManager
 import com.unit.testing.databinding.FragmentAddShoppingItemBinding
 import com.unit.testing.presentation.viewmodel.ShoppingViewModel
+import com.unit.testing.utils.Status
+import com.unit.testing.utils.showSnackBar
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-class AddShoppingItemFragment : Fragment() {
+@AndroidEntryPoint
+class AddShoppingItemFragment @Inject constructor(
+    private val glide: RequestManager
+) : Fragment() {
 
-    private lateinit var viewModel: ShoppingViewModel
+    lateinit var viewModel: ShoppingViewModel
     private lateinit var binding: FragmentAddShoppingItemBinding
 
 
@@ -28,12 +36,23 @@ class AddShoppingItemFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(requireActivity()).get(ShoppingViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity())[ShoppingViewModel::class.java]
+        subscribeToObserver()
 
-        binding.ivShoppingImage.setOnClickListener {
-            findNavController().navigate(
-                AddShoppingItemFragmentDirections.actionAddShoppingItemFragmentToImagePickFragment()
-            )
+        with(binding) {
+            btnAddShoppingItem.setOnClickListener {
+                viewModel.insertShoppingItem(
+                    etShoppingItemName.text.toString(),
+                    etShoppingItemAmount.text.toString(),
+                    etShoppingItemPrice.text.toString()
+                )
+            }
+
+            ivShoppingImage.setOnClickListener {
+                findNavController().navigate(
+                    AddShoppingItemFragmentDirections.actionAddShoppingItemFragmentToImagePickFragment()
+                )
+            }
         }
 
         val callback = object : OnBackPressedCallback(true) {
@@ -43,5 +62,30 @@ class AddShoppingItemFragment : Fragment() {
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(callback)
+    }
+
+    private fun subscribeToObserver() {
+        viewModel.curImageUrl.observe(viewLifecycleOwner) {
+            glide.load(it).into(binding.ivShoppingImage)
+        }
+        viewModel.insertShoppingItemStatus.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { result ->
+                when (result.status) {
+                    Status.LOADING -> {}
+                    Status.SUCCESS -> {
+                        binding.root.showSnackBar("Item Added")
+                        findNavController().popBackStack()
+                    }
+
+                    Status.ERROR -> {
+                        binding.root.showSnackBar("Error occurred")
+                    }
+
+                    else -> {
+                        binding.root.showSnackBar("Unknown Msg")
+                    }
+                }
+            }
+        }
     }
 }
